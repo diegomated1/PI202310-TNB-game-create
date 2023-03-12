@@ -1,19 +1,19 @@
-// IMPORTS
-import dotenv from 'dotenv';
-import express from 'express';
-import morgan from 'morgan';
-const app = express();
+import { Server } from "socket.io";
 
-// CONFIG
-dotenv.config();
+import roomController from "./controllers/room.controller.js";
 
-// MIDDLEWARES
-app.use(express.json());
-app.use(morgan('dev'));
+const io = new Server(3000, {
+    cors: {
+      origin: '*'
+    }
+});
 
-// ROUTER
 
-// LISTEN
-app.listen(parseInt(process.env.API_PORT!), process.env.API_HOST!, ()=>{
-    console.log(`Listen on http://${process.env.API_HOST}:${process.env.API_PORT}/`);
+io.on("connection", (socket) => {
+
+    roomController(io, socket);
+
+    socket.on("disconnect", ()=>{
+      console.log("disconnected");
+    });
 });
