@@ -4,11 +4,12 @@ import GameModel from '../models/game.model.js';
 
 const matchController = (io: Server, socket: Socket) => {
 
-    const matchCreate = async (id_user:string, number_players:Number, bet:number)=>{
+    const matchCreate = async (id_user:string, number_players:number, ias:number, bet:number)=>{
         const id_game = ui.process(); 
         const new_game = await GameModel.create({
             _id: id_game,
             id_owner: id_user,
+            ias,
             max_number_players: number_players,
             min_bet: bet,
             players: {id_user, bet}
