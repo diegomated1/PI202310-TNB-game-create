@@ -1,6 +1,6 @@
 import { Server } from "socket.io";
 
-import roomController from "./controllers/room.controller.js";
+import matchController from "./controllers/match.controller.js";
 
 const io = new Server(3000, {
     cors: {
@@ -10,10 +10,11 @@ const io = new Server(3000, {
 
 
 io.on("connection", (socket) => {
+  console.log("conectao");
 
-    roomController(io, socket);
+  matchController(io, socket);
 
-    socket.on("disconnect", ()=>{
-      console.log("disconnected");
-    });
+  socket.on("disconnect", ()=>{
+    console.log("disconnected");
+  });
 });
