@@ -6,7 +6,7 @@ const GameModel = db.model('games', new mongoose.Schema({
     id_owner: String,
     max_number_players: Number,
     ias: Number,
-    players: [{id_user: String, bet: Number}],
+    players: [String],
     min_bet: Number
 }));
 
