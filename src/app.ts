@@ -50,9 +50,7 @@ class App{
             }); 
         });
 
-        this.server.listen(3000, ()=>{
-            console.log("Server on port 3000");
-        });
+        this.server.listen(parseInt(process.env.API_PORT||'3000'));
     }
 
 }
