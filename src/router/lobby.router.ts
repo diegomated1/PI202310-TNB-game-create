@@ -13,7 +13,6 @@ export default class LobbyRouter{
     }
 
     private routes(){
-        this.router.route('/').post(this.controller.createLobby);
         this.router.route('/').get(this.controller.get);
         this.router.route('/:id_lobby').get(this.controller.getById);
     }
