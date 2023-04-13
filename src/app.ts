@@ -38,16 +38,12 @@ class App{
     }
 
     routes(){
-        this.app.use('/lobbies', this.LobbyRouter.router);
+        this.app.use('/lobby', this.LobbyRouter.router);
     }
 
     start(){
-        this.io.on('connection', (socket)=>{
-            console.log("conectado");
+        this.io.of('/lobby').on('connection', (socket)=>{
             new LobbyListeners(this.io, socket);
-            socket.on('disconnect', () => {
-                console.log('desconectado');
-            }); 
         });
 
         this.server.listen(parseInt(process.env.API_PORT||'3000'));
