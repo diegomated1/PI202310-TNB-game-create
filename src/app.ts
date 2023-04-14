@@ -6,13 +6,12 @@ import io from 'socket.io';
 import LobbyRouter from './router/lobby.router.js';
 import LobbyListeners from './listeners/lobby.listeners.js';
 import cors from 'cors';
-
+import mongoDb from './database/mongo.db.js';
 class App{
 
     app: Application
     server: http.Server
     io: io.Server
-    LobbyRouter: LobbyRouter
 
     constructor(){
         this.app = express();
@@ -20,9 +19,9 @@ class App{
         this.io = new io.Server(this.server, {
             cors: {
                 origin: '*'
-            }
+            },
+            path: '/lobby/'
         });
-        this.LobbyRouter = new LobbyRouter();
         this.config();
         this.routes();
         this.start();
@@ -30,6 +29,7 @@ class App{
 
     config(){
         dotenv.config();
+        new mongoDb().connect();
         this.app.use(cors({
             origin: "*"
         }));
@@ -38,11 +38,11 @@ class App{
     }
 
     routes(){
-        this.app.use('/lobby', this.LobbyRouter.router);
+        this.app.use('/lobby', new LobbyRouter().router);
     }
 
     start(){
-        this.io.of('/lobby').on('connection', (socket)=>{
+        this.io.on('connection', (socket)=>{
             new LobbyListeners(this.io, socket);
         });
 

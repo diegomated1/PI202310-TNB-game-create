@@ -13,7 +13,7 @@ export default class LobbyListeners{
 
     private start(id_lobby:string){
         try{
-            this.io.of('/lobby').to(`lobby:${id_lobby}`).emit("lobby:start");
+            this.io.to(`lobby:${id_lobby}`).emit("lobby:start");
         }catch(error){
             console.log(error);
         }
@@ -38,7 +38,7 @@ export default class LobbyListeners{
                 players: [{id_user: id_owner, id_hero}]
             });
             this.socket.join(`lobby:${id_lobby}`)
-            this.io.of('/lobby').emit('lobby:create', lobby);
+            this.io.emit('lobby:create', lobby);
         }catch(error){
             this.socket.emit('lobby:create');
             console.log(error);
@@ -61,7 +61,7 @@ export default class LobbyListeners{
                     lobby.players.push({id_user, id_hero});
                     await lobby.save();
                     this.socket.join(`lobby:${id_lobby}`);
-                    this.io.of('/lobby').to(`lobby:${id_lobby}`).emit("lobby:user:join", id_user);
+                    this.io.to(`lobby:${id_lobby}`).emit("lobby:user:join", id_user);
                 }else{
                     this.socket.emit('lobby:user:join');
                 }
@@ -82,7 +82,7 @@ export default class LobbyListeners{
             if(lobby){
                 await lobby.updateOne({'$pull': {players: id_user}});
                 this.socket.leave(`lobby:${id_lobby}`);
-                this.io.of('/lobby').to(`lobby:${id_lobby}`).emit("lobby:user:leave", id_user);
+                this.io.to(`lobby:${id_lobby}`).emit("lobby:user:leave", id_user);
             }
         }catch(error){
             console.log(error);
