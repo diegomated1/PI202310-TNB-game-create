@@ -5,9 +5,7 @@ const LobbyModel = mongoose.model('lobbies', new mongoose.Schema({
     id_owner: String,
     max_number_players: Number,
     ias: Number,
-    players: [{
-        id_user: String, id_hero: String
-    }],
+    players: [String],
     min_bet: Number
 }));
 

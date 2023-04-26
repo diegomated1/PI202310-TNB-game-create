@@ -38,11 +38,15 @@ class App{
     }
 
     routes(){
-        this.app.use('/lobby', new LobbyRouter().router);
+        this.app.use('/lobbies', new LobbyRouter().router);
     }
 
     start(){
         this.io.on('connection', (socket)=>{
+            const {id_lobby} = socket.handshake.query;
+            if(id_lobby){
+                socket.join(`lobby:${id_lobby}`);
+            }
             new LobbyListeners(this.io, socket);
         });
 
